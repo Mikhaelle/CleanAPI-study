@@ -68,7 +68,23 @@ describe('SingUP Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
-  test('Should return 400 if no password is provider', () => {
+  test('Should return 400 if no password confirmation is provider', () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'anyPassword',
+        passwordConfirmation: 'invalid_password'
+      }
+    }
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'))
+  })
+
+  test('Should return 400 if password confirmation fail', () => {
     const { sut } = makeSut()
 
     const httpRequest = {
@@ -80,7 +96,7 @@ describe('SingUP Controller', () => {
     }
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('passwordCorfimation'))
+    expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'))
   })
 
   test('Should return 400 if an invalid email is provider', () => {
@@ -91,7 +107,7 @@ describe('SingUP Controller', () => {
         name: 'any_name',
         email: 'invalid_email@mail.com',
         password: 'anyPassword',
-        passwordCorfimation: 'anyPassword'
+        passwordConfirmation: 'anyPassword'
       }
     }
     const httpResponse = sut.handle(httpRequest)
@@ -107,7 +123,7 @@ describe('SingUP Controller', () => {
         name: 'any_name',
         email: 'invalid_email@mail.com',
         password: 'anyPassword',
-        passwordCorfimation: 'anyPassword'
+        passwordConfirmation: 'anyPassword'
       }
     }
     sut.handle(httpRequest)
@@ -122,7 +138,7 @@ describe('SingUP Controller', () => {
         name: 'any_name',
         email: 'invalid_email@mail.com',
         password: 'anyPassword',
-        passwordCorfimation: 'anyPassword'
+        passwordConfirmation: 'anyPassword'
       }
     }
     const httpResponse = sut.handle(httpRequest)

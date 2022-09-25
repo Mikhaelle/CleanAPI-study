@@ -1,10 +1,6 @@
-import { AccountModel } from '../../domain/models/account'
-import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account'
-import { InvalidParamError, MissingParamError, ServerError } from '../erros'
-import { EmailValidator } from '../protocols'
+import { InvalidParamError, MissingParamError, ServerError } from '../../erros'
 import { SingUpController } from './singup'
-
-
+import { AccountModel, AddAccount, AddAccountModel, EmailValidator } from './singup-protocols'
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -186,7 +182,7 @@ describe('SingUP Controller', () => {
     expect(addSpy).toHaveBeenCalledWith({
       name: 'any_name',
       email: 'invalid_email@mail.com',
-      password: 'anyPassword',
+      password: 'anyPassword'
     })
   })
 })
